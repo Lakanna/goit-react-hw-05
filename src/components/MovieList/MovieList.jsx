@@ -1,45 +1,40 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import ListOfFilms from "../ListOfFilms/ListOfFilms";
+import fetchData from "../../FetchData";
 
 export default function MovieList() {
   const [listFilms, setListFilms] = useState([]);
-  const url = "https://api.themoviedb.org/3/trending/movie/day";
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  const options = {
-    headers: {
-      // Замість api_read_access_token вставте свій токен
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlZjJjMWVjNTM1YWVhNWJhMTEwYjMzNTM2NzNiNzliMyIsIm5iZiI6MTcyMzkyODEwOS41OTA5OTYsInN1YiI6IjY2YzEwYmM4NjJjYjVmNjlkYTE2YWQ3OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5Jr4S-hFFyTGB-UPQ3vcYr0Ahmk1mETjvYJWA_QAWw8",
-    },
-    api_key: "ef2c1ec535aea5ba110b3353673b79b3",
-  };
+  const endPoint = "trending/movie/day";
+
   useEffect(() => {
     const getFilmsList = async () => {
       try {
-        const respons = await axios.get(url, options);
-
-        setListFilms(respons.data.results);
+        setLoading(true);
+        const respons = await fetchData(1, "", endPoint);
+        setListFilms(respons.results);
       } catch {
+        setError(true);
         (err) => console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
+
     getFilmsList();
   }, []);
   // const { id } = useParams();
 
   return (
-    <main>
+    <>
       <div>MovieList</div>
-      <ul>
-        {listFilms.map(({ id, title }) => {
-          return (
-            <li key={id}>
-              <Link to={`movies/${id}`}>{title}</Link>
-            </li>
-          );
-        })}
-      </ul>
-    </main>
+      {loading && <div>Loading a list of films</div>}
+      {error && (
+        <div>Oops... It is error....Please try reloading this page!</div>
+      )}
+      {listFilms.length > 0 && <ListOfFilms list={listFilms} />}
+    </>
   );
 }

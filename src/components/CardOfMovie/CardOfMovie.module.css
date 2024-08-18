@@ -1,0 +1,8 @@
+.poster {
+  width: 200px;
+}
+
+.cardContainer {
+  display: flex;
+  gap: 20px;
+}

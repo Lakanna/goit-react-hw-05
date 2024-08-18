@@ -1,0 +1,21 @@
+.img {
+  width: 150px;
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+.listOfCast {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.itemOfCast {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid wheat;
+  width: 200px;
+  height: 300px;
+  padding: 8px;
+  align-items: center;
+  background-color: rgba(201, 207, 211, 0.442);
+}

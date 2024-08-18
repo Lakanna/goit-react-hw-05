@@ -1,3 +1,43 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import fetchData from "../../FetchData";
+import CardOfCast from "../CardOfCast/CardOfCast";
+
 export default function MovieCast() {
-  return <div>Movie cast</div>;
+  const [movieCast, setMovieCast] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const { id } = useParams();
+  const endPoint = `movie/${id}/credits`;
+
+  useEffect(() => {
+    const getCast = async () => {
+      try {
+        setLoading(true);
+        const respons = await fetchData(1, "", endPoint);
+
+        setMovieCast(respons.cast);
+      } catch {
+        setError(true);
+        (err) => console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getCast();
+  }, [endPoint]);
+
+  return (
+    <>
+      <div>Movie cast</div>
+      {loading && <div>Loading info about actors</div>}
+      {error && <div>Oops.. It is error..Please try reloading this page!</div>}
+      {movieCast.length > 0 ? (
+        <CardOfCast movieCast={movieCast} />
+      ) : (
+        <h2>Sorry, there is no information about actors</h2>
+      )}
+    </>
+  );
 }
