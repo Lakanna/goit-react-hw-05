@@ -30,7 +30,7 @@ export default function MovieCast() {
 
   return (
     <>
-      <div>Movie cast</div>
+      <h2>Movie actors:</h2>
       {loading && <div>Loading info about actors</div>}
       {error && <div>Oops.. It is error..Please try reloading this page!</div>}
       {movieCast.length > 0 ? (

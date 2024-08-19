@@ -1,8 +1,16 @@
 .poster {
-  width: 200px;
+  width: 250px;
 }
 
 .cardContainer {
   display: flex;
   gap: 20px;
+}
+
+.dataMovie {
+  margin-bottom: 10px;
+}
+
+.span {
+  color: #646cff;
 }

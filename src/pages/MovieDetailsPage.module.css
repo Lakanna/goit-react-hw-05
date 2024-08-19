@@ -1,0 +1,17 @@
+.listLink {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 20px;
+  border-bottom: 1px solid whitesmoke;
+  border-top: 1px solid whitesmoke;
+}
+
+.linkGoBack {
+  display: inline-block;
+  padding: 10px;
+
+  font-size: 20px;
+  margin: 20px 0;
+  border: 1px solid whitesmoke;
+  border-radius: 4px;
+}

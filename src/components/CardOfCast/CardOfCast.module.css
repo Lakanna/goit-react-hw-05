@@ -12,9 +12,9 @@
 .itemOfCast {
   display: flex;
   flex-direction: column;
-  border: 2px solid wheat;
+  border: 1px solid #646cff;
   width: 200px;
-  height: 300px;
+  height: 350px;
   padding: 8px;
   align-items: center;
   background-color: rgba(201, 207, 211, 0.442);

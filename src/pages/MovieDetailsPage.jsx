@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import fetchData from "../FetchData";
 import CardOfMovie from "../components/CardOfMovie/CardOfMovie";
+import css from "./MovieDetailsPage.module.css";
 
 export default function MovieDetailsPage() {
   const { id } = useParams();
@@ -9,13 +10,12 @@ export default function MovieDetailsPage() {
   const [dataFilm, setDataFilm] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const navigate = useNavigate();
-  const endPoint = `movie/${id}`;
-  // console.log(endPoint, "endPoint in movie det before fetch");
 
-  function handleClick() {
-    navigate("/");
-  }
+  const endPoint = `movie/${id}`;
+  const location = useLocation();
+
+  const backLinkHref = location.state ?? "/";
+
   useEffect(() => {
     const getDataFilm = async () => {
       try {
@@ -23,13 +23,25 @@ export default function MovieDetailsPage() {
         setError(false);
 
         const respons = await fetchData(1, "", endPoint);
-        const { poster_path, overview, original_title, genres } = respons;
+
+        const {
+          poster_path,
+          overview,
+          original_title,
+          genres,
+          vote_average,
+          release_date,
+          origin_country,
+        } = respons;
 
         setDataFilm({
           poster_path,
           overview,
           original_title,
           genres,
+          vote_average,
+          release_date,
+          origin_country,
         });
       } catch {
         setError(true);
@@ -42,23 +54,25 @@ export default function MovieDetailsPage() {
     getDataFilm();
   }, [endPoint]);
 
-  console.log(dataFilm, "data after useeffect");
-
   return (
     <main>
-      <div>Movie details page for {id}</div>
       {loading && <div>Loading</div>}
       {error && <div>Error</div>}
       {dataFilm.original_title && <CardOfMovie data={dataFilm} />}
-      <button type="button" onClick={handleClick}>
+
+      <Link to={backLinkHref} className={css.linkGoBack}>
         Go back
-      </button>
-      <ul>
+      </Link>
+      <ul className={css.listLink}>
         <li>
-          <Link to="cast">Cast</Link>
+          <Link to="cast" state={location.state}>
+            Cast
+          </Link>
         </li>
         <li>
-          <Link to="reviews">Review</Link>
+          <Link to="reviews" state={location.state}>
+            Review
+          </Link>
         </li>
       </ul>
       <Outlet />
