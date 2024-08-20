@@ -36,7 +36,7 @@ export default function MovieReviews() {
       {reviews.length > 0 ? (
         <ReviewsList arrOfReviews={reviews} />
       ) : (
-        <h3>Sorry, there is not reviews for this movie yet</h3>
+        <h3>Sorry, there are no reviews for this movie yet</h3>
       )}
     </>
   );

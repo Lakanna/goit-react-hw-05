@@ -1,10 +1,6 @@
-import { useLocation } from "react-router-dom";
 import css from "./SearhForm.module.css";
 
-export default function SearhForm({ onSubmit, getLocation }) {
-  const location = useLocation();
-  getLocation(location);
-
+export default function SearhForm({ onSubmit }) {
   function handleSubmit(e) {
     e.preventDefault();
     const form = e.currentTarget;

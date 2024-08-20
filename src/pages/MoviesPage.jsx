@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import fetchData from "../FetchData";
 import ListOfFilms from "../components/ListOfFilms/ListOfFilms";
 import SearhForm from "../components/SearchForm/SearhForm";
@@ -9,13 +9,14 @@ export default function MoviesPage() {
   const [error, setError] = useState(false);
   const [searchFilms, setSearchFilms] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [location, setLocation] = useState({});
+  // const [location, setLocation] = useState({});
+  const location = useLocation();
 
   const endpoint = "search/movie";
 
-  function getLocation(value) {
-    setLocation(value);
-  }
+  // function getLocation(value) {
+  //   setLocation(value);
+  // }
   const query = searchParams.get("query") ?? "";
 
   function setParams(value) {
@@ -47,7 +48,7 @@ export default function MoviesPage() {
   return (
     <main>
       <h3>Movies search page</h3>
-      <SearhForm onSubmit={setParams} getLocation={getLocation} />
+      <SearhForm onSubmit={setParams} />
 
       {loading && <div>Loading</div>}
       {error && <div>Error</div>}

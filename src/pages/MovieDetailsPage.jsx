@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import fetchData from "../FetchData";
 import CardOfMovie from "../components/CardOfMovie/CardOfMovie";
@@ -27,7 +27,7 @@ export default function MovieDetailsPage() {
         const {
           poster_path,
           overview,
-          original_title,
+          title,
           genres,
           vote_average,
           release_date,
@@ -37,7 +37,7 @@ export default function MovieDetailsPage() {
         setDataFilm({
           poster_path,
           overview,
-          original_title,
+          title,
           genres,
           vote_average,
           release_date,
@@ -58,7 +58,7 @@ export default function MovieDetailsPage() {
     <main>
       {loading && <div>Loading</div>}
       {error && <div>Error</div>}
-      {dataFilm.original_title && <CardOfMovie data={dataFilm} />}
+      {dataFilm.title && <CardOfMovie data={dataFilm} />}
 
       <Link to={backLinkHref} className={css.linkGoBack}>
         Go back
@@ -75,7 +75,9 @@ export default function MovieDetailsPage() {
           </Link>
         </li>
       </ul>
-      <Outlet />
+      <Suspense fallback={<div>Loading</div>}>
+        <Outlet />
+      </Suspense>
     </main>
   );
 }

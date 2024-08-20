@@ -4,7 +4,7 @@ export default function CardOfMovie({ data }) {
   const {
     poster_path,
     overview,
-    original_title,
+    title,
     genres,
     vote_average,
     release_date,
@@ -12,21 +12,27 @@ export default function CardOfMovie({ data }) {
   } = data;
 
   const src = `https://image.tmdb.org/t/p/w500/${poster_path}`;
+
   return (
     <div className={css.cardContainer}>
       <img
         className={css.poster}
-        src={src}
-        alt={`poster of ${original_title}`}
+        src={
+          poster_path
+            ? src
+            : "http://dummyimage.com/250x375/c4c4c8/646cff.gif&text=The+image!"
+        }
+        alt={`poster of ${title}`}
       />
       <div>
-        <h2>Title: {original_title}</h2>
+        <h2>Title: {title}</h2>
         <p className={css.dataMovie}>
-          <span className={css.span}>Release date :</span> {release_date}
+          <span className={css.span}>Release date :</span>{" "}
+          {release_date !== "" ? release_date : <>Sorry, not found</>}
         </p>
         <p className={css.dataMovie}>
           <span className={css.span}>Origin country : </span>
-          {origin_country}
+          {origin_country.join(", ")}
         </p>
         <p className={css.dataMovie}>
           <span className={css.span}>Vote average : </span>
@@ -34,11 +40,15 @@ export default function CardOfMovie({ data }) {
         </p>
         <p className={css.dataMovie}>
           <span className={css.span}>Overviev: </span>
-          {overview}
+          {overview !== "" ? overview : <>Sorry, not found</>}
         </p>
         <p className={css.dataMovie}>
           <span className={css.span}>Genres : </span>
-          {genres.map(({ name }) => name).join(", ")}
+          {genres.length > 0 ? (
+            genres.map(({ name }) => name).join(", ")
+          ) : (
+            <>Sorry, not found</>
+          )}
         </p>
       </div>
     </div>

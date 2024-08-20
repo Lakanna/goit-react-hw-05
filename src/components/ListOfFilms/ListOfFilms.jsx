@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
+import css from "./ListOfFilms.module.css";
 
 export default function ListOfFilms({ list, state }) {
   return (
-    <ul>
+    <ul className={css.listOfFilms}>
       {list.map(({ id, title, release_date }) => {
         const year = new Date(release_date);
 
