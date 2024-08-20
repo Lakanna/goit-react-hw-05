@@ -3,21 +3,29 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import fetchData from "../FetchData";
 import ListOfFilms from "../components/ListOfFilms/ListOfFilms";
 import SearhForm from "../components/SearchForm/SearhForm";
+import { toast } from "react-toastify";
 
 export default function MoviesPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [searchFilms, setSearchFilms] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  // const [location, setLocation] = useState({});
+
   const location = useLocation();
-
   const endpoint = "search/movie";
-
-  // function getLocation(value) {
-  //   setLocation(value);
-  // }
   const query = searchParams.get("query") ?? "";
+
+  const notify = () =>
+    toast.warn("😈 There is not matched movie, please, try an other one", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
 
   function setParams(value) {
     setSearchParams({ query: value.toLowerCase() });
@@ -33,6 +41,11 @@ export default function MoviesPage() {
         setLoading(true);
         setError(false);
         const response = await fetchData(1, query, endpoint);
+
+        if (response.results.length === 0) {
+          notify();
+          return;
+        }
         setSearchFilms(response.results);
       } catch {
         setError(true);
