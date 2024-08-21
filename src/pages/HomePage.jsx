@@ -1,16 +1,30 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import MovieList from "../components/MovieList/MovieList";
 import fetchData from "../FetchData";
+import LoadMore from "../components/LoadMore/LoadMore";
 
 export default function HomePage() {
   const [listFilms, setListFilms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const location = useLocation();
 
+  const pageOnParams = Number(searchParams.get("page"));
+  const [page, setPage] = useState(() => (pageOnParams ? pageOnParams : 1));
+
   const endPoint = "trending/movie/day";
+
+  function changePage(page, change) {
+    setPage(page + change);
+  }
+  function resetPage() {
+    setPage(1);
+  }
 
   useEffect(() => {
     const getFilmsList = async () => {
@@ -18,9 +32,11 @@ export default function HomePage() {
         setLoading(true);
         setError(false);
 
-        const respons = await fetchData(1, "", endPoint);
+        const respons = await fetchData(page, "", endPoint);
 
-        // setTotalPages(respons.total_pages);
+        setSearchParams({ page: page });
+
+        setTotalPages(respons.total_pages);
 
         setListFilms([...respons.results]);
       } catch {
@@ -32,7 +48,7 @@ export default function HomePage() {
     };
 
     getFilmsList();
-  }, []);
+  }, [page]);
 
   return (
     <main>
@@ -41,10 +57,19 @@ export default function HomePage() {
       {error && (
         <div>Oops... It is error....Please try reloading this page!</div>
       )}
-      {listFilms.length > 0 && (
-        <MovieList list={listFilms} state={location.state} />
+      {listFilms.length > 0 && <MovieList list={listFilms} state={location} />}
+      {page > 1 && (
+        <LoadMore onClick={changePage} change={-1} page={page}>
+          Previos page
+        </LoadMore>
       )}
-      {/* {page < totalPages && <LoadMore onClick={addPage} />} */}
+      <LoadMore page={page}>{page}</LoadMore>
+      {page < totalPages && (
+        <LoadMore onClick={changePage} change={1} page={page}>
+          Next page
+        </LoadMore>
+      )}
+      {page !== 1 && <LoadMore onClick={resetPage}>Reset page</LoadMore>}
     </main>
   );
 }

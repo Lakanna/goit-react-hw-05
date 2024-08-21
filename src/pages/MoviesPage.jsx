@@ -4,19 +4,31 @@ import fetchData from "../FetchData";
 import MovieList from "../components/MovieList/MovieList";
 import SearhForm from "../components/SearchForm/SearhForm";
 import { toast } from "react-toastify";
+import LoadMore from "../components/LoadMore/LoadMore";
 
 export default function MoviesPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [searchFilms, setSearchFilms] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [totalPages, setTotalPages] = useState(1);
 
   const location = useLocation();
   const endpoint = "search/movie";
   const query = searchParams.get("query") ?? "";
+  const pageOnParams = Number(searchParams.get("page"));
+  const page = pageOnParams ? pageOnParams : 1;
+
+  function changePage(page, change, query) {
+    setSearchParams({ query: query, page: page + change });
+  }
+
+  function resetPage(page, change, query) {
+    setSearchParams({ query: query, page: 1 });
+  }
 
   const notify = () =>
-    toast.warn("😈 There is not matched movie, please, try an other one", {
+    toast.warn("😈 There is not matched movie, please, try other one", {
       position: "top-center",
       autoClose: 5000,
       hideProgressBar: false,
@@ -28,7 +40,7 @@ export default function MoviesPage() {
     });
 
   function setParams(value) {
-    setSearchParams({ query: value.toLowerCase() });
+    setSearchParams({ query: value.toLowerCase(), page: 1 });
   }
 
   useEffect(() => {
@@ -40,12 +52,14 @@ export default function MoviesPage() {
       try {
         setLoading(true);
         setError(false);
-        const response = await fetchData(1, query, endpoint);
+        const response = await fetchData(page, query, endpoint);
 
         if (response.results.length === 0) {
           notify();
           return;
         }
+
+        setTotalPages(response.total_pages);
         setSearchFilms(response.results);
       } catch {
         setError(true);
@@ -56,17 +70,32 @@ export default function MoviesPage() {
     };
 
     getSearchFilms(query);
-  }, [query]);
+  }, [query, page]);
 
   return (
     <main>
       <h3>Movies search page</h3>
       <SearhForm onSubmit={setParams} />
-
       {loading && <div>Loading</div>}
       {error && <div>Error</div>}
       {searchFilms.length > 0 && (
         <MovieList list={searchFilms} state={location} />
+      )}
+      {page > 1 && (
+        <LoadMore onClick={changePage} change={-1} page={page} query={query}>
+          Previos page
+        </LoadMore>
+      )}
+      {totalPages > 1 && <LoadMore page={page}>{page}</LoadMore>}
+      {page < totalPages && (
+        <LoadMore onClick={changePage} change={1} page={page} query={query}>
+          Next page
+        </LoadMore>
+      )}
+      {page !== 1 && (
+        <LoadMore onClick={resetPage} page={page} change={0} query={query}>
+          Reset page
+        </LoadMore>
       )}
     </main>
   );

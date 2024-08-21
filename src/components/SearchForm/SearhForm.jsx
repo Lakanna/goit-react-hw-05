@@ -25,6 +25,7 @@ export default function SearhForm({ onSubmit }) {
       console.log("Please, input value for search");
       return;
     }
+
     onSubmit(value);
     form.reset();
   }
