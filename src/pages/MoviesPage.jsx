@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import fetchData from "../FetchData";
-import ListOfFilms from "../components/ListOfFilms/ListOfFilms";
+import MovieList from "../components/MovieList/MovieList";
 import SearhForm from "../components/SearchForm/SearhForm";
 import { toast } from "react-toastify";
 
@@ -49,7 +49,7 @@ export default function MoviesPage() {
         setSearchFilms(response.results);
       } catch {
         setError(true);
-        (err) => console.error(err);
+        console.error();
       } finally {
         setLoading(false);
       }
@@ -66,7 +66,7 @@ export default function MoviesPage() {
       {loading && <div>Loading</div>}
       {error && <div>Error</div>}
       {searchFilms.length > 0 && (
-        <ListOfFilms list={searchFilms} state={location} />
+        <MovieList list={searchFilms} state={location} />
       )}
     </main>
   );

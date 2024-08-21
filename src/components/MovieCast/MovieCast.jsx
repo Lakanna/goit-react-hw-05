@@ -4,29 +4,29 @@ import fetchData from "../../FetchData";
 import CardOfCast from "../CardOfCast/CardOfCast";
 
 export default function MovieCast() {
-  const [movieCast, setMovieCast] = useState({});
+  const [movieCast, setMovieCast] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const { id } = useParams();
-  const endPoint = `movie/${id}/credits`;
+  // const endPoint = `movie/${id}/credits`;
 
   useEffect(() => {
     const getCast = async () => {
       try {
         setLoading(true);
-        const respons = await fetchData(1, "", endPoint);
+        const respons = await fetchData(1, "", `movie/${id}/credits`);
 
         setMovieCast(respons.cast);
       } catch {
         setError(true);
-        (err) => console.error(err);
+        console.error();
       } finally {
         setLoading(false);
       }
     };
 
     getCast();
-  }, [endPoint]);
+  }, [id]);
 
   return (
     <>

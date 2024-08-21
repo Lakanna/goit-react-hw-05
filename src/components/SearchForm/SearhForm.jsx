@@ -14,6 +14,7 @@ export default function SearhForm({ onSubmit }) {
       progress: undefined,
       theme: "dark",
     });
+
   function handleSubmit(e) {
     e.preventDefault();
     const form = e.currentTarget;

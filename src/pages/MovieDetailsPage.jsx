@@ -11,7 +11,7 @@ export default function MovieDetailsPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const endPoint = `movie/${id}`;
+  // const endPoint = `movie/${id}`;
   const location = useLocation();
 
   const backLinkHref = location.state ?? "/";
@@ -22,7 +22,7 @@ export default function MovieDetailsPage() {
         setLoading(true);
         setError(false);
 
-        const respons = await fetchData(1, "", endPoint);
+        const respons = await fetchData(1, "", `movie/${id}`);
 
         const {
           poster_path,
@@ -52,7 +52,7 @@ export default function MovieDetailsPage() {
     };
 
     getDataFilm();
-  }, [endPoint]);
+  }, [id]);
 
   return (
     <main>

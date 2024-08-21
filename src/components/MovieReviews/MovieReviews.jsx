@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import fetchData from "../../FetchData";
 import { useParams } from "react-router-dom";
+import fetchData from "../../FetchData";
 import ReviewsList from "../ReviewsList/ReviewsList";
 
 export default function MovieReviews() {
@@ -9,24 +9,25 @@ export default function MovieReviews() {
   const [error, setError] = useState(false);
   const { id } = useParams();
 
-  const endPoint = `movie/${id}/reviews`;
+  // const endPoint = `movie/${id}/reviews`;
 
   useEffect(() => {
     const getReviews = async () => {
       try {
         setLoading(true);
         setError(false);
-        const respons = await fetchData(1, "", endPoint);
+        const respons = await fetchData(1, "", `movie/${id}/reviews`);
         setReviews(respons.results);
       } catch {
-        setError(true), (err) => console.error(err);
+        setError(true);
+        console.error();
       } finally {
         setLoading(false);
       }
     };
 
     getReviews();
-  }, [endPoint]);
+  }, [id]);
 
   return (
     <>
