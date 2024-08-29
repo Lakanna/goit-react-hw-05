@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import MovieList from "../components/MovieList/MovieList";
 import fetchData from "../FetchData";
 import LoadMore from "../components/LoadMore/LoadMore";
@@ -11,8 +11,6 @@ export default function HomePage() {
   const [totalPages, setTotalPages] = useState(1);
 
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const location = useLocation();
 
   const pageOnParams = Number(searchParams.get("page"));
   const [page, setPage] = useState(() => (pageOnParams ? pageOnParams : 1));
@@ -39,9 +37,9 @@ export default function HomePage() {
         setTotalPages(respons.total_pages);
 
         setListFilms([...respons.results]);
-      } catch {
+      } catch (error) {
         setError(true);
-        console.error();
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -57,7 +55,7 @@ export default function HomePage() {
       {error && (
         <div>Oops... It is error....Please try reloading this page!</div>
       )}
-      {listFilms.length > 0 && <MovieList list={listFilms} state={location} />}
+      {listFilms.length > 0 && <MovieList list={listFilms} />}
       {page > 1 && (
         <LoadMore onClick={changePage} change={-1} page={page}>
           Previos page

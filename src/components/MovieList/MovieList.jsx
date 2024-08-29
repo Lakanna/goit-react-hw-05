@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import css from "./MovieList.module.css";
 
-export default function ListOfFilms({ list, state }) {
+export default function MovieList({ list }) {
+  const location = useLocation();
+
   return (
     <ul className={css.listOfFilms}>
       {list.map(({ id, title, release_date }) => {
@@ -9,7 +11,7 @@ export default function ListOfFilms({ list, state }) {
 
         return (
           <li key={id}>
-            <Link to={`/movies/${id}`} state={state}>
+            <Link to={`/movies/${id}`} state={location}>
               {title}
               {"  "} {year.getFullYear() ? year.getFullYear() : <p>not info</p>}
             </Link>

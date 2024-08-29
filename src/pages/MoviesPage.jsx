@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import fetchData from "../FetchData";
 import MovieList from "../components/MovieList/MovieList";
 import SearhForm from "../components/SearchForm/SearhForm";
@@ -13,7 +13,6 @@ export default function MoviesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [totalPages, setTotalPages] = useState(1);
 
-  const location = useLocation();
   const endpoint = "search/movie";
   const query = searchParams.get("query") ?? "";
   const pageOnParams = Number(searchParams.get("page"));
@@ -61,9 +60,9 @@ export default function MoviesPage() {
 
         setTotalPages(response.total_pages);
         setSearchFilms(response.results);
-      } catch {
+      } catch (error) {
         setError(true);
-        console.error();
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -78,9 +77,7 @@ export default function MoviesPage() {
       <SearhForm onSubmit={setParams} />
       {loading && <div>Loading</div>}
       {error && <div>Error</div>}
-      {searchFilms.length > 0 && (
-        <MovieList list={searchFilms} state={location} />
-      )}
+      {searchFilms.length > 0 && <MovieList list={searchFilms} />}
       {page > 1 && (
         <LoadMore onClick={changePage} change={-1} page={page} query={query}>
           Previos page

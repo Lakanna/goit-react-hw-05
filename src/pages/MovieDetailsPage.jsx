@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import fetchData from "../FetchData";
 import CardOfMovie from "../components/CardOfMovie/CardOfMovie";
@@ -14,7 +14,7 @@ export default function MovieDetailsPage() {
   // const endPoint = `movie/${id}`;
   const location = useLocation();
 
-  const backLinkHref = location.state ?? "/";
+  const backLinkHref = useRef(location.state ?? "/");
 
   useEffect(() => {
     const getDataFilm = async () => {
@@ -43,9 +43,9 @@ export default function MovieDetailsPage() {
           release_date,
           origin_country,
         });
-      } catch {
+      } catch (error) {
         setError(true);
-        console.error();
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -60,19 +60,15 @@ export default function MovieDetailsPage() {
       {error && <div>Error</div>}
       {dataFilm.title && <CardOfMovie data={dataFilm} />}
 
-      <Link to={backLinkHref} className={css.linkGoBack}>
+      <Link to={backLinkHref.current} className={css.linkGoBack}>
         Go back
       </Link>
       <ul className={css.listLink}>
         <li>
-          <Link to="cast" state={location.state}>
-            Cast
-          </Link>
+          <Link to="cast">Cast</Link>
         </li>
         <li>
-          <Link to="reviews" state={location.state}>
-            Review
-          </Link>
+          <Link to="reviews">Review</Link>
         </li>
       </ul>
       <Suspense fallback={<div>Loading</div>}>
