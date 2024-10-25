@@ -4,7 +4,8 @@ import fetchData from "../FetchData";
 import MovieList from "../components/MovieList/MovieList";
 import SearhForm from "../components/SearchForm/SearhForm";
 import { toast } from "react-toastify";
-import LoadMore from "../components/LoadMore/LoadMore";
+
+import { PaginatedMovies } from "../components/PaginatedMovies/PaginatedMovies.jsx";
 
 export default function MoviesPage() {
   const [loading, setLoading] = useState(false);
@@ -12,18 +13,15 @@ export default function MoviesPage() {
   const [searchFilms, setSearchFilms] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [totalPages, setTotalPages] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
 
   const endpoint = "search/movie";
   const query = searchParams.get("query") ?? "";
   const pageOnParams = Number(searchParams.get("page"));
   const page = pageOnParams ? pageOnParams : 1;
 
-  function changePage(page, change, query) {
-    setSearchParams({ query: query, page: page + change });
-  }
-
-  function resetPage(page, change, query) {
-    setSearchParams({ query: query, page: 1 });
+  function changePage(page, query) {
+    setSearchParams({ query: query, page: page });
   }
 
   const notify = () =>
@@ -57,6 +55,7 @@ export default function MoviesPage() {
           notify();
           return;
         }
+        console.log(response.total_pages, "total pages in useeffect");
 
         setTotalPages(response.total_pages);
         setSearchFilms(response.results);
@@ -78,21 +77,12 @@ export default function MoviesPage() {
       {loading && <div>Loading</div>}
       {error && <div>Error</div>}
       {searchFilms.length > 0 && <MovieList list={searchFilms} />}
-      {page > 1 && (
-        <LoadMore onClick={changePage} change={-1} page={page} query={query}>
-          Previos page
-        </LoadMore>
-      )}
-      {totalPages > 1 && <LoadMore page={page}>{page}</LoadMore>}
-      {page < totalPages && (
-        <LoadMore onClick={changePage} change={1} page={page} query={query}>
-          Next page
-        </LoadMore>
-      )}
-      {page !== 1 && (
-        <LoadMore onClick={resetPage} page={page} change={0} query={query}>
-          Reset page
-        </LoadMore>
+      {searchFilms.length > 0 && (
+        <PaginatedMovies
+          totalPages={totalPages}
+          onChangePage={changePage}
+          query={query}
+        />
       )}
     </main>
   );

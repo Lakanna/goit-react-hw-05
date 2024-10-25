@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import MovieList from "../components/MovieList/MovieList";
 import fetchData from "../FetchData";
-import LoadMore from "../components/LoadMore/LoadMore";
+// import LoadMore from "../components/LoadMore/LoadMore";
+import { PaginatedMovies } from "../components/PaginatedMovies/PaginatedMovies.jsx";
 
 export default function HomePage() {
   const [listFilms, setListFilms] = useState([]);
@@ -17,11 +18,8 @@ export default function HomePage() {
 
   const endPoint = "trending/movie/day";
 
-  function changePage(page, change) {
-    setPage(page + change);
-  }
-  function resetPage() {
-    setPage(1);
+  function changePage(page) {
+    setPage(page);
   }
 
   useEffect(() => {
@@ -56,7 +54,14 @@ export default function HomePage() {
         <div>Oops... It is error....Please try reloading this page!</div>
       )}
       {listFilms.length > 0 && <MovieList list={listFilms} />}
-      {page > 1 && (
+      {listFilms.length > 0 && (
+        <PaginatedMovies
+          totalPages={totalPages}
+          onChangePage={changePage}
+          query=""
+        />
+      )}
+      {/* {page > 1 && (
         <LoadMore onClick={changePage} change={-1} page={page}>
           Previos page
         </LoadMore>
@@ -67,7 +72,7 @@ export default function HomePage() {
           Next page
         </LoadMore>
       )}
-      {page !== 1 && <LoadMore onClick={resetPage}>Reset page</LoadMore>}
+      {page !== 1 && <LoadMore onClick={resetPage}>Reset page</LoadMore>} */}
     </main>
   );
 }
