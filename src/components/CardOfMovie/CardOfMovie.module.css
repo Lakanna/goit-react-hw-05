@@ -14,3 +14,13 @@
 .span {
   color: #646cff;
 }
+
+@media (max-width: 480px) {
+  .cardContainer {
+    gap: 10px;
+    flex-direction: column; /* стилі для маленьких екранів */
+  }
+  .poster {
+    width: 100%;
+  }
+}

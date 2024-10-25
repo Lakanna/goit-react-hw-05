@@ -46,7 +46,7 @@ export default function HomePage() {
     };
 
     getFilmsList();
-  }, [page]);
+  }, [page, setSearchParams]);
 
   return (
     <main>

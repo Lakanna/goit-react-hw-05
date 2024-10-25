@@ -7,8 +7,10 @@
 .listOfCast {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 20px;
+  justify-content: space-evenly;
 }
+
 .itemOfCast {
   display: flex;
   flex-direction: column;

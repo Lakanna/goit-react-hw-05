@@ -38,7 +38,9 @@ export default function SearhForm({ onSubmit }) {
         autoComplete="off"
         placeholder="Movies title"
       />
-      <button type="submit">Search</button>
+      <button className={css.buttonSearch} type="submit">
+        Search
+      </button>
       <ToastContainer />
     </form>
   );

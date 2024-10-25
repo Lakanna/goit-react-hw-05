@@ -2,3 +2,9 @@
   list-style: inside;
   margin-bottom: 20px;
 }
+
+@media (max-width: 480px) {
+  .listOfFilms {
+    text-align: left;
+  }
+}

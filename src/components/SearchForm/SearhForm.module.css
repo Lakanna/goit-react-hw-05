@@ -5,3 +5,13 @@
   font-size: 15px;
   width: 300px;
 }
+
+.buttonSearch {
+  margin: 15px 0;
+}
+
+@media (max-width: 480px) {
+  .input {
+    width: 100%;
+  }
+}

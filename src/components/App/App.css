@@ -1,17 +1,24 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   /* text-align: center; */
 }
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
 .container {
-  max-width: 1280px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5em;
+  }
+  .container {
+    max-width: 480px;
+    text-align: center; /* стилі для маленьких екранів */
+  }
+}
+@media (max-width: 768px) {
+  .container {
+    max-width: 768px; /* стилі для планшетів  */
+  }
 }
