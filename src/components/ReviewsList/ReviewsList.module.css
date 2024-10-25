@@ -6,3 +6,9 @@
   color: #646cff;
   /* background-color: #c4c4c8; */
 }
+
+@media only screen and (max-width: 768px) {
+  .list {
+    text-align: left;
+  }
+}

@@ -3,6 +3,7 @@ import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import fetchData from "../FetchData";
 import CardOfMovie from "../components/CardOfMovie/CardOfMovie";
 import css from "./MovieDetailsPage.module.css";
+import { addBackToTop } from "vanilla-back-to-top";
 
 export default function MovieDetailsPage() {
   const { id } = useParams();
@@ -13,6 +14,11 @@ export default function MovieDetailsPage() {
 
   // const endPoint = `movie/${id}`;
   const location = useLocation();
+  addBackToTop({
+    diameter: 40,
+    backgroundColor: "rgba(100, 108, 255, 0.574)",
+    showWhenScrollTopIs: 1,
+  });
 
   const backLinkHref = useRef(location.state ?? "/");
 

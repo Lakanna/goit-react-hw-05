@@ -2,7 +2,7 @@ import css from "./ReviewsList.module.css";
 
 export default function ReviewsList({ arrOfReviews }) {
   return (
-    <ul>
+    <ul className={css.list}>
       {arrOfReviews.map(({ id, content, author }) => {
         return (
           <li key={id} className={css.item}>
